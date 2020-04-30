@@ -1,16 +1,14 @@
 ﻿using Sales.App.Formatting;
 using Sales.Infrastructure;
 using System;
-using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Sales.App
 {
-    partial class Program
+    public class Program
     {
         private const string source = "./data/in";
         private const string processed = "./data/in/processed";
@@ -85,7 +83,7 @@ namespace Sales.App
 
         private static async void OnChanged(object source, FileSystemEventArgs e)
         {
-            if(File.Exists(Path.Combine(processed, e.Name)))
+            if (File.Exists(Path.Combine(processed, e.Name)))
             {
                 Console.WriteLine($"File {e.Name} has alredy been processed!");
                 return;
@@ -96,7 +94,7 @@ namespace Sales.App
             countDown.AddCount();
             await ProcessSalesContent(e.FullPath);
             countDown.Decrement();
-            
+
             if (countDown.CurrentCount == 0)
             {
                 var report = new SalesReportFormatting().Format(new SalesAnalises().Report());
